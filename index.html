@@ -12,20 +12,25 @@
         .page-side { background: #fff; width: 350px; height: 450px; padding: 20px; border-radius: 5px; display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
         .album-img { width: 140px; height: 140px; object-fit: cover; margin: 5px; border: 2px solid #eee; }
         .rotate-img { transform: rotate(90deg); }
-        .btn { padding: 15px 30px; background: #ff85a1; color: white; border: none; border-radius: 20px; cursor: pointer; margin: 10px; font-size: 18px; }
+        .btn { padding: 10px 20px; background: #ff85a1; color: white; border: none; border-radius: 20px; cursor: pointer; margin: 5px; }
+        #lyrics-display { color: #d62828; font-weight: bold; font-size: 1.5em; margin: 20px; min-height: 50px; display: block; }
+        #music-symbol { font-size: 50px; display: none; }
     </style>
 </head>
 <body>
+
     <div id="page1" class="page active">
         <h1>Letters For You</h1>
         <div class="envelope" onclick="showPage('page2')">💌</div>
         <button class="btn" onclick="showPage('page2')">NEXT</button>
     </div>
+
     <div id="page2" class="page">
         <h2>Choose a Path</h2>
         <div class="envelope" onclick="showPage('album')">💌 Memories</div>
         <div class="envelope" onclick="showPage('wish')">💌 Birthday Wish</div>
     </div>
+
     <div id="album" class="page">
         <div id="closed-book" class="closed-book" onclick="openBook()">📖 Open Album</div>
         <div id="open-book" class="book-spread" style="display:none;">
@@ -38,6 +43,7 @@
             <button class="btn" onclick="showPage('page2')">HOME</button>
         </div>
     </div>
+
     <div id="wish" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
             <h1>HAPPY 54th BIRTHDAY, DAD!</h1>
@@ -45,30 +51,82 @@
             <br><button class="btn" onclick="showPage('wish-extra')">NEXT</button>
         </div>
     </div>
+
     <div id="wish-extra" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
-            <h3>Enjoy the song!</h3>
-            <!-- Removed autoplay so it waits for you -->
-            <iframe width="300" height="60" src="https://vocaroo.com/embed/12NeDfDY9ZmA" frameborder="0"></iframe>
-            <br>
+            <audio id="mySong" src="images/song.mp3.wav" preload="auto"></audio>
+            <div id="music-symbol">🎵</div>
+            <div id="lyrics-display">Press Play to begin...</div>
             <img src="images/extra1.jpg.jpeg" class="album-img"> 
             <img src="images/extra2.jpg.jpeg" class="album-img">
             <br>
+            <button class="btn" onclick="playAudio()">PLAY SONG</button>
             <button class="btn" onclick="showPage('page2')">HOME</button>
         </div>
     </div>
+
     <script>
         function showPage(p) { document.querySelectorAll('.page').forEach(x => x.classList.remove('active')); document.getElementById(p).classList.add('active'); }
         function openBook() { document.getElementById('closed-book').style.display='none'; document.getElementById('open-book').style.display='flex'; document.getElementById('controls').style.display='block'; render(); }
+        
         let spread = 0;
         function render() {
             let left = document.getElementById('left'), right = document.getElementById('right');
             left.innerHTML = ""; right.innerHTML = "";
-            for(let i=1; i<=4; i++) { let idx = (spread*4)+i; let rot = (idx == 1) ? 'rotate-img' : ''; if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; }
-            for(let i=5; i<=8; i++) { let idx = (spread*4)+i; if(idx<=30) right.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img">`; }
+            for(let i=1; i<=4; i++) { 
+                let idx = (spread*4)+i; 
+                let rot = (idx == 1) ? 'rotate-img' : '';
+                if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; 
+            }
+            for(let i=5; i<=8; i++) { 
+                let idx = (spread*4)+i; 
+                if(idx<=30) right.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img">`; 
+            }
         }
         function nextSpread() { if(spread<6) { spread++; render(); } }
         function prevSpread() { if(spread>0) { spread--; render(); } }
+        
+        const audio = document.getElementById('mySong');
+        const lyrics = document.getElementById('lyrics-display');
+        const musicSymbol = document.getElementById('music-symbol');
+        
+        const lyricData = [
+            { time: 26, text: "Ambar pe mere ek hi taara" }, { time: 31, text: "Woh ek taara ho tum" },
+            { time: 35, text: "Na koi Khuda mera tere sivah" }, { time: 40, text: "Mera jag saara ho tum" },
+            { time: 44, text: "Maine tumhein jahaan rakha" }, { time: 48, text: "Koi nahin hai wahaan" },
+            { time: 53, text: "Papa, meri jaan, har-dum rakhna" }, { time: 57, text: "Ab haath yeh sar par tum" },
+            { time: 62, text: "Papa, meri jaan, mere sang chalna" }, { time: 66, text: "Har meel ka patthar tum" },
+            { time: 70, text: "Tumhin pe toh theherte hain" }, { time: 75, text: "Yeh raaste mere liye" },
+            { time: 106, text: "Dhadkan-dhadkan tum seene mein" }, { time: 110, text: "Har waqt dhadakte ho" },
+            { time: 114, text: "Jaaun kahin bhi main, tum ho ya na ho" }, { time: 119, text: "Par saath hi rehte ho" },
+            { time: 123, text: "Tum hote ho in aankhon mein" }, { time: 127, text: "In aankhon mein har jagah" },
+            { time: 132, text: "Papa, meri jaan, har-dum rakhna" }, { time: 137, text: "Ab haath yeh sar par tum" },
+            { time: 141, text: "Papa, meri jaan, mere sang chalna" }, { time: 145, text: "Har meel ka patthar tum" },
+            { time: 149, text: "Tumhin pe toh theherte hain" }, { time: 154, text: "Yeh raaste mere liye" },
+            { time: 185, text: "Na isse badi meri koi khushi" }, { time: 189, text: "Mujhe dekho jo hans kar tum" },
+            { time: 194, text: "Tumko kuch bhi hone na doonga" }, { time: 198, text: "Yeh likh lo dil par tum" },
+            { time: 202, text: "Hatheli ki lakeeron ko" }, { time: 207, text: "Main mod doon tere liye" },
+            { time: 211, text: "Papa, meri jaan, har-dum rakhna" }, { time: 216, text: "Ab haath yeh sar par tum" },
+            { time: 220, text: "Papa, meri jaan, mere sang chalna" }, { time: 225, text: "Har meel ka patthar tum" },
+            { time: 229, text: "Tumhin pe toh theherte hain" }, { time: 233, text: "Yeh raaste mere liye" },
+            { time: 291, text: "Dariya-dariya, sehra-sehra" }, { time: 295, text: "Sooraj sa bhatakte ho" },
+            { time: 299, text: "Dil hi dil mein ek aag liye" }, { time: 304, text: "Kyun aise dehekte ho?" },
+            { time: 308, text: "Ruko zara, thamo zara" }, { time: 312, text: "Main bhi jaloon tere liye" }
+        ];
+
+        audio.ontimeupdate = () => { 
+            let current = lyricData.filter(item => audio.currentTime >= item.time);
+            if(current.length > 0) lyrics.innerText = current[current.length - 1].text; 
+        };
+
+        function playAudio() {
+            audio.play().then(() => {
+                musicSymbol.style.display = 'block';
+            }).catch(error => {
+                console.error("Playback Error:", error);
+                alert("Audio could not play. Check the console for details.");
+            });
+        }
     </script>
 </body>
 </html>
