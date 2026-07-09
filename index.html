@@ -12,11 +12,10 @@
         .page-side { background: #fff; width: 350px; height: 450px; padding: 20px; border-radius: 5px; display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
         .album-img { width: 140px; height: 140px; object-fit: cover; margin: 5px; border: 2px solid #eee; }
         .rotate-img { transform: rotate(90deg); }
-        .btn { padding: 10px 20px; background: #ff85a1; color: white; border: none; border-radius: 20px; cursor: pointer; margin: 5px; }
+        .btn { padding: 15px 30px; background: #ff85a1; color: white; border: none; border-radius: 20px; cursor: pointer; margin: 10px; font-size: 18px; }
     </style>
 </head>
 <body>
-
     <div id="page1" class="page active">
         <h1>Letters For You</h1>
         <div class="envelope" onclick="showPage('page2')">💌</div>
@@ -53,7 +52,7 @@
     <div id="wish-extra" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
             <h3>Enjoy the song!</h3>
-            <!-- This uses your Vocaroo link safely -->
+            <!-- Vocaroo Player Embed -->
             <iframe width="300" height="60" src="https://vocaroo.com/embed/12NeDfDY9ZmA" frameborder="0"></iframe>
             <br>
             <img src="images/extra1.jpg.jpeg" class="album-img"> 
@@ -66,20 +65,12 @@
     <script>
         function showPage(p) { document.querySelectorAll('.page').forEach(x => x.classList.remove('active')); document.getElementById(p).classList.add('active'); }
         function openBook() { document.getElementById('closed-book').style.display='none'; document.getElementById('open-book').style.display='flex'; document.getElementById('controls').style.display='block'; render(); }
-        
         let spread = 0;
         function render() {
             let left = document.getElementById('left'), right = document.getElementById('right');
             left.innerHTML = ""; right.innerHTML = "";
-            for(let i=1; i<=4; i++) { 
-                let idx = (spread*4)+i; 
-                let rot = (idx == 1) ? 'rotate-img' : '';
-                if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; 
-            }
-            for(let i=5; i<=8; i++) { 
-                let idx = (spread*4)+i; 
-                if(idx<=30) right.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img">`; 
-            }
+            for(let i=1; i<=4; i++) { let idx = (spread*4)+i; let rot = (idx == 1) ? 'rotate-img' : ''; if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; }
+            for(let i=5; i<=8; i++) { let idx = (spread*4)+i; if(idx<=30) right.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img">`; }
         }
         function nextSpread() { if(spread<6) { spread++; render(); } }
         function prevSpread() { if(spread>0) { spread--; render(); } }
