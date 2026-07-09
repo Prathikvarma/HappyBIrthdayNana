@@ -63,7 +63,8 @@
             <div id="lyrics-display">Press Play to begin...</div>
             <img src="images/extra1.jpg.jpeg" class="album-img"> 
             <img src="images/extra2.jpg.jpeg" class="album-img">
-            <br><button class="btn" onclick="document.getElementById('mySong').play()">PLAY SONG</button>
+            <br>
+            <button class="btn" onclick="playAudio()">PLAY SONG</button>
             <button class="btn" onclick="showPage('page2')">HOME</button>
         </div>
     </div>
@@ -78,7 +79,7 @@
             left.innerHTML = ""; right.innerHTML = "";
             for(let i=1; i<=4; i++) { 
                 let idx = (spread*4)+i; 
-                let rot = (idx == 1) ? 'rotate-img' : ''; // CHANGE idx==1 TO ROTATE SPECIFIC PHOTOS
+                let rot = (idx == 1) ? 'rotate-img' : '';
                 if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; 
             }
             for(let i=5; i<=8; i++) { 
@@ -118,6 +119,13 @@
             let current = lyricData.filter(item => audio.currentTime >= item.time);
             if(current.length > 0) lyrics.innerText = current[current.length - 1].text; 
         };
+
+        function playAudio() {
+            const song = document.getElementById('mySong');
+            song.play().catch(error => {
+                console.error("Playback failed:", error);
+            });
+        }
     </script>
 </body>
 </html>
