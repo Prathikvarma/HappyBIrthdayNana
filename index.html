@@ -17,16 +17,19 @@
     </style>
 </head>
 <body>
+
     <div id="page1" class="page active">
         <h1>Letters For You</h1>
         <div class="envelope" onclick="showPage('page2')">💌</div>
         <button class="btn" onclick="showPage('page2')">NEXT</button>
     </div>
+
     <div id="page2" class="page">
         <h2>Choose a Path</h2>
         <div class="envelope" onclick="showPage('album')">💌 Memories</div>
         <div class="envelope" onclick="showPage('wish')">💌 Birthday Wish</div>
     </div>
+
     <div id="album" class="page">
         <div id="closed-book" class="closed-book" onclick="openBook()">📖 Open Album</div>
         <div id="open-book" class="book-spread" style="display:none;">
@@ -39,33 +42,41 @@
             <button class="btn" onclick="showPage('page2')">HOME</button>
         </div>
     </div>
+
     <div id="wish" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
             <h1>HAPPY 54th BIRTHDAY, DAD!</h1>
-            <img src="images/birthday-photo.jpg.jpeg" style="width:100%">
             <br><button class="btn" onclick="showPage('wish-extra')">NEXT</button>
         </div>
     </div>
+
     <div id="wish-extra" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
-            <!-- Added "controls" to test if the file is playable -->
-            <audio id="mySong" src="images/song.mp3.wav" controls preload="auto"></audio>
-            <div id="lyrics-display">Press Play on the player above...</div>
-            <img src="images/extra1.jpg.jpeg" class="album-img"> 
-            <img src="images/extra2.jpg.jpeg" class="album-img">
+            <!-- Using a test audio link to verify functionality -->
+            <audio id="mySong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+            <div id="lyrics-display">Press Play to begin...</div>
             <br>
+            <button class="btn" onclick="document.getElementById('mySong').play()">PLAY SONG</button>
             <button class="btn" onclick="showPage('page2')">HOME</button>
         </div>
     </div>
+
     <script>
         function showPage(p) { document.querySelectorAll('.page').forEach(x => x.classList.remove('active')); document.getElementById(p).classList.add('active'); }
         function openBook() { document.getElementById('closed-book').style.display='none'; document.getElementById('open-book').style.display='flex'; document.getElementById('controls').style.display='block'; render(); }
+        
         let spread = 0;
         function render() {
             let left = document.getElementById('left'), right = document.getElementById('right');
             left.innerHTML = ""; right.innerHTML = "";
-            for(let i=1; i<=4; i++) { let idx = (spread*4)+i; let rot = (idx == 1) ? 'rotate-img' : ''; if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; }
-            for(let i=5; i<=8; i++) { let idx = (spread*4)+i; if(idx<=30) right.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img">`; }
+            for(let i=1; i<=4; i++) { 
+                let idx = (spread*4)+i; 
+                if(idx<=30) left.innerHTML += `<div style="width:140px; height:140px; background:#ddd; margin:5px;"></div>`; 
+            }
+            for(let i=5; i<=8; i++) { 
+                let idx = (spread*4)+i; 
+                if(idx<=30) right.innerHTML += `<div style="width:140px; height:140px; background:#ddd; margin:5px;"></div>`; 
+            }
         }
         function nextSpread() { if(spread<6) { spread++; render(); } }
         function prevSpread() { if(spread>0) { spread--; render(); } }
