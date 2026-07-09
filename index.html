@@ -12,11 +12,10 @@
         .book-spread { display: flex; justify-content: center; gap: 20px; }
         .page-side { background: #fff; width: 350px; height: 450px; padding: 20px; border-radius: 5px; display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
         
-        /* Fixed sizing for images */
         .album-img { width: 140px; height: 140px; object-fit: cover; margin: 5px; border: 2px solid #eee; }
         .rotate-img { transform: rotate(90deg); }
         
-        .btn { padding: 10px 20px; background: #ff85a1; color: white; border: none; border-radius: 20px; cursor: pointer; margin: 5px; }
+        .btn { padding: 15px 30px; background: #ff85a1; color: white; border: none; border-radius: 20px; cursor: pointer; margin: 10px; font-size: 18px; }
         #lyrics-display { color: #d62828; font-weight: bold; font-size: 1.5em; margin: 20px; min-height: 50px; display: block; }
         #music-symbol { font-size: 50px; display: none; }
     </style>
@@ -58,7 +57,8 @@
 
     <div id="wish-extra" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
-            <audio id="mySong" src="images/song.mp3.wav" onplay="document.getElementById('music-symbol').style.display='block'" onpause="document.getElementById('music-symbol').style.display='none'"></audio>
+            <!-- Ensure this file path is exact -->
+            <audio id="mySong" src="images/song.mp3.wav"></audio>
             <div id="music-symbol">🎵</div>
             <div id="lyrics-display">Press Play to begin...</div>
             <img src="images/extra1.jpg.jpeg" class="album-img"> 
@@ -92,6 +92,8 @@
         
         const audio = document.getElementById('mySong');
         const lyrics = document.getElementById('lyrics-display');
+        const musicSymbol = document.getElementById('music-symbol');
+        
         const lyricData = [
             { time: 26, text: "Ambar pe mere ek hi taara" }, { time: 31, text: "Woh ek taara ho tum" },
             { time: 35, text: "Na koi Khuda mera tere sivah" }, { time: 40, text: "Mera jag saara ho tum" },
@@ -115,15 +117,18 @@
             { time: 299, text: "Dil hi dil mein ek aag liye" }, { time: 304, text: "Kyun aise dehekte ho?" },
             { time: 308, text: "Ruko zara, thamo zara" }, { time: 312, text: "Main bhi jaloon tere liye" }
         ];
+
         audio.ontimeupdate = () => { 
             let current = lyricData.filter(item => audio.currentTime >= item.time);
             if(current.length > 0) lyrics.innerText = current[current.length - 1].text; 
         };
 
         function playAudio() {
-            const song = document.getElementById('mySong');
-            song.play().catch(error => {
+            audio.play().then(() => {
+                musicSymbol.style.display = 'block';
+            }).catch(error => {
                 console.error("Playback failed:", error);
+                alert("Please click the page first, then try playing the song again!");
             });
         }
     </script>
