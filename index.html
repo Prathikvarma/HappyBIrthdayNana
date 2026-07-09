@@ -49,8 +49,8 @@
     </div>
     <div id="wish-extra" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
-            <!-- VERIFY THIS FILENAME MATCHES YOUR FOLDER EXACTLY -->
-            <audio id="mySong" src="images/song.mp3.wav"></audio>
+            <!-- Audio file path with preload attribute -->
+            <audio id="mySong" src="images/song.mp3.wav" preload="auto"></audio>
             <div id="music-symbol">🎵</div>
             <div id="lyrics-display">Press Play to begin...</div>
             <img src="images/extra1.jpg.jpeg" class="album-img"> 
@@ -67,21 +67,16 @@
         function render() {
             let left = document.getElementById('left'), right = document.getElementById('right');
             left.innerHTML = ""; right.innerHTML = "";
-            for(let i=1; i<=4; i++) { 
-                let idx = (spread*4)+i; 
-                let rot = (idx == 1) ? 'rotate-img' : '';
-                if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; 
-            }
-            for(let i=5; i<=8; i++) { 
-                let idx = (spread*4)+i; 
-                if(idx<=30) right.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img">`; 
-            }
+            for(let i=1; i<=4; i++) { let idx = (spread*4)+i; let rot = (idx == 1) ? 'rotate-img' : ''; if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; }
+            for(let i=5; i<=8; i++) { let idx = (spread*4)+i; if(idx<=30) right.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img">`; }
         }
         function nextSpread() { if(spread<6) { spread++; render(); } }
         function prevSpread() { if(spread>0) { spread--; render(); } }
+        
         const audio = document.getElementById('mySong');
         const lyrics = document.getElementById('lyrics-display');
         const musicSymbol = document.getElementById('music-symbol');
+        
         const lyricData = [
             { time: 26, text: "Ambar pe mere ek hi taara" }, { time: 31, text: "Woh ek taara ho tum" },
             { time: 35, text: "Na koi Khuda mera tere sivah" }, { time: 40, text: "Mera jag saara ho tum" },
@@ -105,10 +100,12 @@
             { time: 299, text: "Dil hi dil mein ek aag liye" }, { time: 304, text: "Kyun aise dehekte ho?" },
             { time: 308, text: "Ruko zara, thamo zara" }, { time: 312, text: "Main bhi jaloon tere liye" }
         ];
+
         audio.ontimeupdate = () => { 
             let current = lyricData.filter(item => audio.currentTime >= item.time);
             if(current.length > 0) lyrics.innerText = current[current.length - 1].text; 
         };
+
         function playAudio() {
             audio.play().then(() => {
                 musicSymbol.style.display = 'block';
