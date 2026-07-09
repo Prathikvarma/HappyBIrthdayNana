@@ -57,7 +57,6 @@
 
     <div id="wish-extra" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
-            <!-- Ensure this file path is exact -->
             <audio id="mySong" src="images/song.mp3.wav"></audio>
             <div id="music-symbol">🎵</div>
             <div id="lyrics-display">Press Play to begin...</div>
@@ -127,8 +126,7 @@
             audio.play().then(() => {
                 musicSymbol.style.display = 'block';
             }).catch(error => {
-                console.error("Playback failed:", error);
-                alert("Please click the page first, then try playing the song again!");
+                console.log("Waiting for user interaction:", error);
             });
         }
     </script>
