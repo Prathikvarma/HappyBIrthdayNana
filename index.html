@@ -41,14 +41,18 @@
     <div id="wish" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
             <h1>HAPPY 54th BIRTHDAY, DAD!</h1>
+            <img src="images/birthday-photo.jpg.jpeg" style="width:100%">
             <br><button class="btn" onclick="showPage('wish-extra')">NEXT</button>
         </div>
     </div>
     <div id="wish-extra" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
-            <h3>Click Play below to listen:</h3>
-            <!-- Official Vocaroo Embed Player -->
-            <iframe width="300" height="60" src="https://vocaroo.com/embed/12NeDfDY9ZmA?autoplay=1" frameborder="0" allow="autoplay"></iframe>
+            <h3>Enjoy the song!</h3>
+            <!-- Removed autoplay so it waits for you -->
+            <iframe width="300" height="60" src="https://vocaroo.com/embed/12NeDfDY9ZmA" frameborder="0"></iframe>
+            <br>
+            <img src="images/extra1.jpg.jpeg" class="album-img"> 
+            <img src="images/extra2.jpg.jpeg" class="album-img">
             <br>
             <button class="btn" onclick="showPage('page2')">HOME</button>
         </div>
@@ -60,8 +64,8 @@
         function render() {
             let left = document.getElementById('left'), right = document.getElementById('right');
             left.innerHTML = ""; right.innerHTML = "";
-            for(let i=1; i<=4; i++) { let idx = (spread*4)+i; if(idx<=30) left.innerHTML += `<div style="width:140px; height:140px; background:#eee; margin:5px;"></div>`; }
-            for(let i=5; i<=8; i++) { let idx = (spread*4)+i; if(idx<=30) right.innerHTML += `<div style="width:140px; height:140px; background:#eee; margin:5px;"></div>`; }
+            for(let i=1; i<=4; i++) { let idx = (spread*4)+i; let rot = (idx == 1) ? 'rotate-img' : ''; if(idx<=30) left.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img ${rot}">`; }
+            for(let i=5; i<=8; i++) { let idx = (spread*4)+i; if(idx<=30) right.innerHTML += `<img src="images/img${idx}.jpg.jpeg" class="album-img">`; }
         }
         function nextSpread() { if(spread<6) { spread++; render(); } }
         function prevSpread() { if(spread>0) { spread--; render(); } }
