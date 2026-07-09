@@ -7,33 +7,27 @@
         body { font-family: 'Comic Sans MS', cursive; background-color: #fff0f5; text-align: center; padding: 20px; }
         .page { display: none; } .active { display: block; }
         .envelope { font-size: 80px; cursor: pointer; margin: 15px; display: block; }
-        
         .closed-book { width: 220px; height: 300px; background: #ff758f; margin: 50px auto; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; font-size: 28px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .book-spread { display: flex; justify-content: center; gap: 20px; }
         .page-side { background: #fff; width: 350px; height: 450px; padding: 20px; border-radius: 5px; display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
-        
         .album-img { width: 140px; height: 140px; object-fit: cover; margin: 5px; border: 2px solid #eee; }
         .rotate-img { transform: rotate(90deg); }
-        
         .btn { padding: 15px 30px; background: #ff85a1; color: white; border: none; border-radius: 20px; cursor: pointer; margin: 10px; font-size: 18px; }
         #lyrics-display { color: #d62828; font-weight: bold; font-size: 1.5em; margin: 20px; min-height: 50px; display: block; }
         #music-symbol { font-size: 50px; display: none; }
     </style>
 </head>
 <body>
-
     <div id="page1" class="page active">
         <h1>Letters For You</h1>
         <div class="envelope" onclick="showPage('page2')">💌</div>
         <button class="btn" onclick="showPage('page2')">NEXT</button>
     </div>
-
     <div id="page2" class="page">
         <h2>Choose a Path</h2>
         <div class="envelope" onclick="showPage('album')">💌 Memories</div>
         <div class="envelope" onclick="showPage('wish')">💌 Birthday Wish</div>
     </div>
-
     <div id="album" class="page">
         <div id="closed-book" class="closed-book" onclick="openBook()">📖 Open Album</div>
         <div id="open-book" class="book-spread" style="display:none;">
@@ -46,7 +40,6 @@
             <button class="btn" onclick="showPage('page2')">HOME</button>
         </div>
     </div>
-
     <div id="wish" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
             <h1>HAPPY 54th BIRTHDAY, DAD!</h1>
@@ -54,9 +47,9 @@
             <br><button class="btn" onclick="showPage('wish-extra')">NEXT</button>
         </div>
     </div>
-
     <div id="wish-extra" class="page">
         <div style="background:#fff; padding:30px; border-radius:20px; max-width:500px; margin:auto;">
+            <!-- VERIFY THIS FILENAME MATCHES YOUR FOLDER EXACTLY -->
             <audio id="mySong" src="images/song.mp3.wav"></audio>
             <div id="music-symbol">🎵</div>
             <div id="lyrics-display">Press Play to begin...</div>
@@ -67,11 +60,9 @@
             <button class="btn" onclick="showPage('page2')">HOME</button>
         </div>
     </div>
-
     <script>
         function showPage(p) { document.querySelectorAll('.page').forEach(x => x.classList.remove('active')); document.getElementById(p).classList.add('active'); }
         function openBook() { document.getElementById('closed-book').style.display='none'; document.getElementById('open-book').style.display='flex'; document.getElementById('controls').style.display='block'; render(); }
-        
         let spread = 0;
         function render() {
             let left = document.getElementById('left'), right = document.getElementById('right');
@@ -88,11 +79,9 @@
         }
         function nextSpread() { if(spread<6) { spread++; render(); } }
         function prevSpread() { if(spread>0) { spread--; render(); } }
-        
         const audio = document.getElementById('mySong');
         const lyrics = document.getElementById('lyrics-display');
         const musicSymbol = document.getElementById('music-symbol');
-        
         const lyricData = [
             { time: 26, text: "Ambar pe mere ek hi taara" }, { time: 31, text: "Woh ek taara ho tum" },
             { time: 35, text: "Na koi Khuda mera tere sivah" }, { time: 40, text: "Mera jag saara ho tum" },
@@ -116,17 +105,15 @@
             { time: 299, text: "Dil hi dil mein ek aag liye" }, { time: 304, text: "Kyun aise dehekte ho?" },
             { time: 308, text: "Ruko zara, thamo zara" }, { time: 312, text: "Main bhi jaloon tere liye" }
         ];
-
         audio.ontimeupdate = () => { 
             let current = lyricData.filter(item => audio.currentTime >= item.time);
             if(current.length > 0) lyrics.innerText = current[current.length - 1].text; 
         };
-
         function playAudio() {
             audio.play().then(() => {
                 musicSymbol.style.display = 'block';
             }).catch(error => {
-                console.log("Waiting for user interaction:", error);
+                console.log("Interaction required to play audio:", error);
             });
         }
     </script>
